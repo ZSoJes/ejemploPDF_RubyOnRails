@@ -1,0 +1,101 @@
+https://www.youtube.com/watch?v=jeWM_gusmJc
+
+
+rails new pdf_proyecto
+
+cd pdf_proyecto
+
+=> Gemfile agregar
+    gem 'wicked_pdf'
+
+bundle install
+
+rails g scaffold Product title pricing:integer
+
+rake db:migrate
+
+=> /db/seeds.rb agregar
+    Product.create(title: 'Manzanas', pricing: 20)
+    Product.create(title: 'Pera', pricing:18)
+    Product.create(title: 'Uva', pricing: 15)
+    Product.create(title: 'Piña', pricing: 20)
+
+rake db:seed
+
+rails g wicked_pdf
+
+=> Gemfile agregar
+    gem 'wkhtmltopdf-binary'
+
+bundle install
+
+=> /app/controllers/products_controller.rb agregar
+    def index
+      @products = Product.all
+      respond_to do |format|
+        format.html
+        format.json
+        format.pdf {render template: 'products/reporte', pdf: 'Reporte', layout: 'pdf.html' } # nombre del archivo a partir del que se genera el pdf
+      end
+    end
+
+<=> crear archivo en
+=> /views/products/reporte.pdf.erb agregar
+<h1>Productos de la base de datos</h1>
+<table class="table">
+    <thead>
+      <tr>
+        <th>Titulo</th>
+        <th>Precio</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td><%= product.title %></td>
+          <td><%= product.pricing %></td>
+        </tr>
+      <% end %>
+    </tbody>
+</table>
+
+
+<==> crear archivo en
+=> /app/assets/stylesheets/pdf.scss agregar
+tr{
+    border-bottom:solid;
+    border-width:1px;
+}
+td, th{
+    text-align:left;
+}
+th{
+    background-color:#000;
+    color:white;
+}
+table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+/* evita que una pagina web se corte al imprimir */
+}
+
+<==> crear archivo en 
+=> /app/views/layouts/pdf.html.erb agregar
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <link rel='stylesheet' type='text/css' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+<!-- es un proyecto derivado de bootstrap para css -->
+    <meta charset='utf-8'>
+</head>
+<body>
+    <%= yield%>
+</body>
+</html>
+
+
+rails s
+ir a
+localhost:3000/products.pdf
