@@ -12,6 +12,19 @@ class ProductsController < ApplicationController
     end
   end
 
+  def download 
+  @products = Product.all
+  pdf = WickedPdf.new.pdf_from_string(
+    render_to_string(template: 'products/reporte.pdf.erb', layout: 'pdf.html')
+    )
+
+  send_data(pdf, 
+    :filename => "Reporte.pdf", 
+    :disposition => 'attachment') 
+end
+
+  
+  
   # GET /products/1
   # GET /products/1.json
   def show
