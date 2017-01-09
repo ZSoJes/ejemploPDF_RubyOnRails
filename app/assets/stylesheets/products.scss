@@ -1,3 +1,36 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.contenido{
+  border:10px solid #164F5E;
+  background-color:dodgerblue;
+  color: white !important;
+  padding-left:10px;
+  font-size: 15px;
+  border-radius:25px;
+}
+
+td{
+ font-size: 12px;
+}
+
+.btn{
+  background-color:darkturquoise;
+  color:white !important;
+  font-weight:bold;
+  padding:7px 13px;
+  border:2px solid teal;
+  margin:10px;
+  display:inline-block;
+  text-align:center;
+  width:150px;
+  a{
+    text-decoration:none !important;
+  }
+}
+
+.btn:hover{
+  color:teal !important;
+  background-color:white !important;
+  border:2px solid darkturquoise !important;
+}
